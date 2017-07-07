@@ -7,4 +7,5 @@
                  [org.clojure/java.jdbc "RELEASE"]
                  [org.xerial/sqlite-jdbc "3.19.3"]
                  [selmer "1.10.8"]
-                 ])
+                 ]
+  :profiles {:dev {:dependencies [[org.clojure/test.check "0.10.0-alpha2"]]}})

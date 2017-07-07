@@ -1,7 +1,12 @@
 (ns clj-docset.core-test
   (:require [clojure.test :refer :all]
-            [clj-docset.core :refer :all]))
+            [clj-docset.core :refer :all]
+            [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
+            ))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest docset-test
+  (is (= {:base-dir "." :id "a" :name "b" :family "c"}
+         (docset :id "a" :name "b" :family "c")))
+  (is (= {:base-dir "/" :id "a" :name "b" :family "c"}
+         (docset :base-dir "/" :id "a" :name "b" :family "c"))))
