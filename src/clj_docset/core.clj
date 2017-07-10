@@ -32,27 +32,24 @@
 (s/def ::docset (s/keys :req-un [:docset/id :docset/name :docset/family]
                         :opt-un [:docset/base-dir :docset/records]))
 
-(apply or [(:id {}) (:name {}) (:family {:family "a"})])
-
-(defn docset [& {:as m}]
+(defn docset
   "Generate docset map.
   ex. (docset :FIXME)
   "
+  [& {:as m}]
   {:post [(s/valid? ::docset %)]}
-
-  (map #(% m) [:id :name :family])
-
-
   (merge {:base-dir "."} m))
 
-(defn record [& {:as m}]
+(defn record
   "Generate record map.
+  `:name` and `:body` keys are required.
 
   ex. (record :name \"foo\" :body \"bar\")
-      => {:name \"foo\" :type \"Guide\" :prefix \"\" :ext \"html\" :body \"bar\"}
+      => {:name \"foo\" :type \"Guide\" :prefix \"none\" :ext \"html\" :body \"bar\"}
   "
+  [& {:as m}]
   {:post [(s/valid? ::record %)]}
-  (merge {:ext "html" :prefix "" :type "Guide"} m))
+  (merge {:ext "html" :prefix "none" :type "Guide"} m))
 
 (defn contents-dir [docset]
   (io/file (:base-dir docset)
@@ -100,8 +97,9 @@
                    :path (record->filename %)})
        (:records docset)))
 
-(defn generate [docset]
+(defn generate
   "Generate docset from `docset` map."
+  [docset]
   (.mkdirs (document-dir docset))
   ;; Info.plist
   (spit (io/file (contents-dir docset) "Info.plist")
